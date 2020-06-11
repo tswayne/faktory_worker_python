@@ -3,6 +3,7 @@ import signal
 import sys
 import time
 import uuid
+import traceback
 from collections import namedtuple
 from concurrent.futures import Executor, ProcessPoolExecutor, ThreadPoolExecutor
 from concurrent.futures.process import BrokenProcessPool
@@ -274,7 +275,7 @@ class Worker:
         response = {"jid": jid}
         if exception is not None:
             response["errtype"] = type(exception).__name__
-            response["message"] = str(exception)
+            response["message"] = traceback.format_exc()
 
         self.faktory.reply("FAIL", response)
         ok = next(self.faktory.get_message())
